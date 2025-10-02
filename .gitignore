@@ -1,1 +1,33 @@
-.vscode
+# IDEs and OS-specific
+.vscode/
+.idea/
+*.iws
+*.iml
+*.ipr
+.DS_Store
+
+# Java/Gradle
+CloudRL/build/
+CloudRL/.gradle/
+CloudRL/out/
+CloudRL/bin/
+*.class
+*.jar
+*.war
+*.ear
+
+# Python
+Python/__pycache__/
+Python/build/
+Python/dist/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.env
+.venv
+env/
+venv/
+
+# Simulation output
+CloudRL/src/main/java/output/

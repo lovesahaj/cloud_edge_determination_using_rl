@@ -1,0 +1,16 @@
+# gRPC Server Configuration
+SERVER_PORT = "50051"
+
+# Reinforcement Learning Agent Parameters
+AGENT_GAMMA = 0.99
+AGENT_EPSILON = 0.15
+AGENT_LR = 3e-3
+AGENT_BATCH_SIZE = 128
+AGENT_N_ACTIONS = 4
+AGENT_INPUT_DIMS = [11]
+AGENT_EPS_END = 0.01
+AGENT_MAX_MEM_SIZE = 1_000_000
+
+# Deep Q-Network Parameters
+DQN_FC1_DIMS = 128
+DQN_FC2_DIMS = 512

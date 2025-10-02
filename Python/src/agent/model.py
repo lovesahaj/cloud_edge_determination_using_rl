@@ -1,8 +1,8 @@
-import torch as T
+ijjmport torch as T
+import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-import numpy as np
 
 DEVICE = T.device('cuda:0' if T.cuda.is_available() else 'cpu')
 # DEVICE = T.device('cpu')
@@ -51,6 +51,8 @@ class Agent:
             max_mem_size=1_000_000,
             eps_end=1e-3,
             eps_dec=5e-4,
+            fc1_dims=128,
+            fc2_dims=512,
     ) -> None:
         self.gamma = gamma
         self.epsilon = epsilon
@@ -63,7 +65,7 @@ class Agent:
         self.eps_dec = eps_dec
 
         self.mem_cntr = 0
-        self.Q_eval = DeepQNetwork(lr=self.lr, input_dims=input_dims, n_actions=n_actions, fc1_dims=128, fc2_dims=512, )
+        self.Q_eval = DeepQNetwork(lr=self.lr, input_dims=input_dims, n_actions=n_actions, fc1_dims=fc1_dims, fc2_dims=fc2_dims, )
 
         self.state_memory = np.zeros((self.max_mem_size, *input_dims), dtype=np.float32)
         self.new_state_memory = np.zeros_like(self.state_memory, dtype=np.float32)
@@ -112,16 +114,10 @@ class Agent:
         action_batch = self.action_memory[batch]
 
         q_eval = self.Q_eval(state_batch)[batch_index, action_batch]
-        # q_next = self.Q_eval(new_state_batch)
-        # q_next[terminal_batch] = 0.0
 
-        q_target = reward_batch # + self.gamma
+        q_target = reward_batch
         loss = self.Q_eval.loss(q_target, q_eval).to(self.Q_eval.device)
         loss.backward()
         self.Q_eval.optimizer.step()
         self.Q_eval.scheduler.step()
         self.counter += 1
-
-
-        # self.epsilon = self.epsilon - self.eps_dec if self.epsilon > self.eps_end \
-        #     else self.eps_end
